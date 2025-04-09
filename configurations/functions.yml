@@ -1,20 +1,3 @@
-getItems:
-  handler: src/items/getItems.handler
-  events:
-    - httpApi:
-        method: get
-        path: /items
-        response:
-          headers:
-            Access-Control-Allow-Origin: "'*'"
-            Access-Control-Allow-Methods: "'OPTIONS,GET'"
-          statusCodes:
-            400:  
-              description: "Validation error"
-              bodyType: "Error"
-            500:  
-              description: "Internal server error"
-              bodyType: "Error"
 getOrders:
   handler: src/orders/getOrders.handler
   events:
@@ -86,6 +69,23 @@ updateOrder:
             200:
               description: "Updated"
               bodyType: "Items"
+            400:  
+              description: "Validation error"
+              bodyType: "Error"
+            500:  
+              description: "Internal server error"
+              bodyType: "Error"
+getOrderById:
+  handler: src/orders/getOrderById.handler
+  events:
+    - httpApi:
+      method: get
+      path: /orders/{id}
+      response:
+          headers:
+            Access-Control-Allow-Origin: "'*'"
+            Access-Control-Allow-Methods: "'OPTIONS,GET'"
+          statusCodes:
             400:  
               description: "Validation error"
               bodyType: "Error"

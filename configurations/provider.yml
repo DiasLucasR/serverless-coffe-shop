@@ -3,6 +3,8 @@ runtime: nodejs20.x
 region: sa-east-1
 httpApi:
   cors: true
+custom:
+  ordersTable: OrdersTable
 iam:
   role:
     statements:
@@ -17,5 +19,4 @@ iam:
         Resource:
           - Fn::GetAtt: [ OrdersTable, Arn ]
   environment:
-    ITEMS_TABLE: 
-    ORDER_TABLE: 
+    ORDER_TABLE: ${self:custom.ordersTable}
