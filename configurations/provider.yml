@@ -4,13 +4,18 @@ region: us-east-1
 httpApi:
   cors: true
 iam:
-  role: arn:aws:iam::123456789012:role/lambda-role
-  policy:
-    - Effect: Allow
-      Action:
-        - lambda:InvokeFunction
-        - lambda:GetFunctionConfiguration
-      Resource: "*"
+  role:
+    statements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+          - dynamodb:Scan
+          - dynamodb:GetItem
+          - dynamodb:PutItem
+          - dynamodb:UpdateItem
+          - dynamodb:DeleteItem
+        Resource:
+          - Fn::GetAtt: [ OrdersTable, Arn ]
   environment:
     ITEMS_TABLE: 
     ORDER_TABLE: 

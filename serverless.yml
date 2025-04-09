@@ -8,3 +8,4 @@ provider: ${file(./configurations/provider.yml)}
 
 functions: ${file(./configurations/functions.yml)}
 
+resources: ${file(./configurations/resources.yml)}

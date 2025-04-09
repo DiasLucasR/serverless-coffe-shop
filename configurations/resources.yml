@@ -1,0 +1,31 @@
+  Resources:
+    ordersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Orders
+        AttributeDefinitions:
+          - AttributeName: orderId
+            AttributeType: S
+          - AttributeName: details
+            AttributeType: M
+        KeySchema:
+          - AttributeName: orderId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+    itemsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Items
+        AttributeDefinitions:
+          - AttributeName: itemId
+            AttributeType: S 
+          - AttributeName: details
+            AttributeType: M
+        KeySchema:
+          - AttributeName: itemId
+            KeyType: HASH 
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
