@@ -1,5 +1,8 @@
 name: aws
 runtime: nodejs20.x
+region: us-east-1
+httpApi:
+  cors: true
 iam:
   role: arn:aws:iam::123456789012:role/lambda-role
   policy:

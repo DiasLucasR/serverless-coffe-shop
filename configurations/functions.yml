@@ -1,5 +1,5 @@
 getItems:
-  handler: getItems
+  handler: src/items/getItems.handler
   events:
     - httpApi:
         method: get
@@ -16,7 +16,7 @@ getItems:
               description: "Internal server error"
               bodyType: "Error"
 getOrders:
-  handler: getOrders
+  handler: src/orders/getOrders.handler
   events:
     - httpApi:
       method: get
@@ -33,7 +33,7 @@ getOrders:
               description: "Internal server error"
               bodyType: "Error"
 createOrder:
-  handler: createOrder
+  handler: src/orders/createOrder.handler
   events:
     - httpApi:
       method: post
@@ -53,7 +53,7 @@ createOrder:
               description: "Internal server error"
               bodyType: "Error"
 deleteOrder:
-  handler: deleteOrder
+  handler: src/orders/deleteOrder.handler
   events:
     - httpApi:
       method: delete
@@ -73,7 +73,7 @@ deleteOrder:
               description: "Internal server error"
               bodyType: "Error"
 updateOrder:
-  handler: updateOrder
+  handler: src/orders/updateOrder.handler
   events:
     - httpApi:
       method: put
