@@ -1,6 +1,5 @@
 name: aws
 runtime: nodejs20.x
-region: sa-east-1
 httpApi:
   cors: true
 custom:

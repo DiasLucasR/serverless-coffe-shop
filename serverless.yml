@@ -1,8 +1,9 @@
 org: lucasdias
-app: coffe-shop
-service: coffe-shop-serverless
+app: coffee-shop
+service: coffee-shop-serverless
 
-
+plugins:
+  - serverless-dynamodb
 
 provider: ${file(./configurations/provider.yml)}
 
