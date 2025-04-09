@@ -6,8 +6,6 @@
         AttributeDefinitions:
           - AttributeName: orderId
             AttributeType: S
-          - AttributeName: details
-            AttributeType: M
         KeySchema:
           - AttributeName: orderId
             KeyType: HASH

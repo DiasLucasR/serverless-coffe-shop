@@ -1,94 +1,35 @@
 getOrders:
   handler: src/orders/getOrders.handler
   events:
-    - httpApi:
-      method: get
-      path: /orders
-      response:
-          headers:
-            Access-Control-Allow-Origin: "'*'"
-            Access-Control-Allow-Methods: "'OPTIONS,GET'"
-          statusCodes:
-            400:  
-              description: "Validation error"
-              bodyType: "Error"
-            500:  
-              description: "Internal server error"
-              bodyType: "Error"
+    - http:
+        method: get
+        path: /orders
+        cors: false
 createOrder:
   handler: src/orders/createOrder.handler
   events:
-    - httpApi:
-      method: post
-      path: /orders
-      response:
-          headers:
-            Access-Control-Allow-Origin: "'*'"
-            Access-Control-Allow-Methods: "'OPTIONS,POST'"
-          statusCodes:
-            200:
-              description: "Created"
-              bodyType: "Items"
-            400:  
-              description: "Validation error"
-              bodyType: "Error"
-            500:  
-              description: "Internal server error"
-              bodyType: "Error"
+    - http:
+        method: post
+        path: /orders
+        cors: false
 deleteOrder:
   handler: src/orders/deleteOrder.handler
   events:
-    - httpApi:
-      method: delete
-      path: /orders/{id}
-      response:
-          headers:
-            Access-Control-Allow-Origin: "'*'"
-            Access-Control-Allow-Methods: "'OPTIONS,DELETE'"
-          statusCodes:
-            200:
-              description: "Deleted"
-              bodyType: "Items"
-            400:  
-              description: "Validation error"
-              bodyType: "Error"
-            500:  
-              description: "Internal server error"
-              bodyType: "Error"
+    - http:
+        method: delete
+        path: /orders/{id}
+        cors: false
 updateOrder:
   handler: src/orders/updateOrder.handler
   events:
-    - httpApi:
-      method: put
-      path: /orders/{id}
-      response:
-          headers:
-            Access-Control-Allow-Origin: "'*'"
-            Access-Control-Allow-Methods: "'OPTIONS,PUT'"
-          statusCodes:
-            200:
-              description: "Updated"
-              bodyType: "Items"
-            400:  
-              description: "Validation error"
-              bodyType: "Error"
-            500:  
-              description: "Internal server error"
-              bodyType: "Error"
+    - http:
+        method: put
+        path: /orders/{id}
+        cors: false
 getOrderById:
   handler: src/orders/getOrderById.handler
   events:
-    - httpApi:
-      method: get
-      path: /orders/{id}
-      response:
-          headers:
-            Access-Control-Allow-Origin: "'*'"
-            Access-Control-Allow-Methods: "'OPTIONS,GET'"
-          statusCodes:
-            400:  
-              description: "Validation error"
-              bodyType: "Error"
-            500:  
-              description: "Internal server error"
-              bodyType: "Error"
+    - http:
+        method: get
+        path: /orders/{id}
+        cors: false

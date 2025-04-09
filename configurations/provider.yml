@@ -2,8 +2,6 @@ name: aws
 runtime: nodejs20.x
 httpApi:
   cors: true
-custom:
-  ordersTable: OrdersTable
 iam:
   role:
     statements:
@@ -17,5 +15,5 @@ iam:
           - dynamodb:DeleteItem
         Resource:
           - Fn::GetAtt: [ OrdersTable, Arn ]
-  environment:
-    ORDER_TABLE: ${self:custom.ordersTable}
+environment:
+  ORDER_TABLE: ${self:custom.tableName}

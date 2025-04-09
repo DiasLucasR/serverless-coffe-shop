@@ -1,10 +1,12 @@
 {
   "name": "coffee-shop-serverless",
   "version": "1.0.0",
-  "main": "index.js",
-  "author": "lucas_dias",
+  "author": "DiasLucasR",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.1692.0"
+    "aws-sdk": "^2.1692.0",
+    "aws-sdk-mock": "^6.2.1",
+    "serverless-dynamodb": "^0.2.56",
+    "serverless-offline": "^14.4.0"
   }
 }

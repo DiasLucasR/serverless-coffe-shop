@@ -1,10 +1,20 @@
-org: lucasdias
+org: diaslucas
 app: coffee-shop
 service: coffee-shop-serverless
 
+
 plugins:
   - serverless-dynamodb
+  - serverless-offline
 
+custom:
+  tableName: OrdersTable
+  serverless-dynamodb:
+    start:
+      port: 8000
+      docker: false
+
+      
 provider: ${file(./configurations/provider.yml)}
 
 functions: ${file(./configurations/functions.yml)}
