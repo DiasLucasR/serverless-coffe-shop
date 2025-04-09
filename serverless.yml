@@ -1,0 +1,15 @@
+org: lucasdias
+app: coffe-shop
+service: coffe-shop-serverless
+
+
+
+provider: ${file(./configurations/provider.yml)}
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - httpApi:
+          path: /
+          method: get

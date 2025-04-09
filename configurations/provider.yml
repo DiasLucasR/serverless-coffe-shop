@@ -1,0 +1,13 @@
+name: aws
+runtime: nodejs20.x
+iam:
+  role: arn:aws:iam::123456789012:role/lambda-role
+  policy:
+    - Effect: Allow
+      Action:
+        - lambda:InvokeFunction
+        - lambda:GetFunctionConfiguration
+      Resource: "*"
+  environment:
+    ITEMS_TABLE: 
+    ORDER_TABLE: 

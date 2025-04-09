@@ -1,0 +1,16 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Serverless Framework artifacts
+.serverless/
+*.log
+
+# Environment files
+.env
+.env.*
+
+node_modules
+.serverless
