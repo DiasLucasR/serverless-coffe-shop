@@ -6,10 +6,5 @@ service: coffe-shop-serverless
 
 provider: ${file(./configurations/provider.yml)}
 
-functions:
-  hello:
-    handler: handler.hello
-    events:
-      - httpApi:
-          path: /
-          method: get
+functions: ${file(./configurations/functions.yml)}
+
