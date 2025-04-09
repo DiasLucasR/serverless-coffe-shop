@@ -3,7 +3,7 @@ const { ORDERS_TABLE } = require("../../constants");
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
-module.exports.updateOrder = async (event, context, callback) => {
+module.exports.handler = async (event, context, callback) => {
     const tableName = ORDERS_TABLE;
     const { id } = event.pathParameters;
     const requestBody = JSON.parse(event.body);
