@@ -21,15 +21,13 @@ module.exports.handler = async (event, context, callback) => {
             body: JSON.stringify(data.Items),
         });
     } catch (error) {
-        console.error("Erro ao buscar itens:", error);
-
         callback(null, {
             statusCode: 500,
             headers: {
                 "Access-Control-Allow-Origin": "*",
             },
             body: JSON.stringify({
-                message: "Erro ao buscar itens",
+                message: "Error fetching orders",
                 error: error.message,
             }),
         });
