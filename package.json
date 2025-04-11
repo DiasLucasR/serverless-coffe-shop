@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "author": "DiasLucasR",
   "license": "MIT",
+  "scripts": {
+    "test": "jest"
+  },
   "dependencies": {
     "aws-sdk": "^2.1692.0",
     "aws-sdk-mock": "^6.2.1",
