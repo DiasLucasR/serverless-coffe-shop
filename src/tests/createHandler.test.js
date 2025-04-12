@@ -1,6 +1,5 @@
-import { handler } from "./createOrder.js";
+import { handler } from "../orders/createOrder";
 import AWS from "aws-sdk";
-import { v4 as uuid } from "uuid";
 import { faker } from "@faker-js/faker";
 
 jest.mock("aws-sdk", () => {
@@ -12,9 +11,7 @@ jest.mock("aws-sdk", () => {
     return { DynamoDB: { DocumentClient } };
 });
 
-jest.mock("uuid", () => ({
-    v4: jest.fn(() => "mocked-uuid"),
-}));
+
 
 describe("createOrder.handler", () => {
     const mockPut = AWS.DynamoDB.DocumentClient.prototype.put;
@@ -34,13 +31,29 @@ describe("createOrder.handler", () => {
         );
     });
 
+    it("deve retornar 400 quando 'details' não está presente no body", async () => {
+        const event = { body: JSON.stringify({}) };
+
+        const result = await handler(event);
+
+        expect(result.statusCode).toBe(400);
+        expect(JSON.parse(result.body).message).toBe(
+            "Pedido inválido. Nome do cliente e itens são obrigatórios."
+        );
+    });
+
     it("deve criar um pedido com sucesso", async () => {
-        const customerName = faker.name.fullName();
+        const clientName = faker.person.fullName();
         const items = Array.from({ length: 3 }, () => faker.commerce.productName());
+        const description = faker.lorem.sentence();
 
         const event = {
             body: JSON.stringify({
-                details: { customerName, items },
+                details: {
+                    clientName,
+                    item: items,
+                    description,
+                },
             }),
         };
 
@@ -59,18 +72,27 @@ describe("createOrder.handler", () => {
             TableName: process.env.ORDERS_TABLE || "OrdersTable",
             Item: {
                 orderId: "mocked-uuid",
-                details: { customerName, items },
+                details: {
+                    clientName,
+                    item: items,
+                    description,
+                },
             },
         });
     });
 
     it("deve retornar 500 quando ocorrer um erro na inserção", async () => {
-        const customerName = faker.name.fullName();
+        const clientName = faker.person.fullName();
         const items = Array.from({ length: 3 }, () => faker.commerce.productName());
+        const description = faker.lorem.sentence();
 
         const event = {
             body: JSON.stringify({
-                details: { customerName, items },
+                details: {
+                    clientName,
+                    item: items,
+                    description,
+                },
             }),
         };
 
@@ -89,7 +111,11 @@ describe("createOrder.handler", () => {
             TableName: process.env.ORDERS_TABLE || "OrdersTable",
             Item: {
                 orderId: "mocked-uuid",
-                details: { customerName, items },
+                details: {
+                    clientName,
+                    item: items,
+                    description,
+                },
             },
         });
     });
