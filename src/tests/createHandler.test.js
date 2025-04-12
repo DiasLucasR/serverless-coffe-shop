@@ -1,100 +1,96 @@
-const AWS = require("aws-sdk");
-const { handler } = require("../orders/createOrder");
+import { handler } from "./createOrder.js";
+import AWS from "aws-sdk";
+import { v4 as uuid } from "uuid";
+import { faker } from "@faker-js/faker";
 
-jest.mock("aws-sdk");
+jest.mock("aws-sdk", () => {
+    const mockPut = jest.fn();
+    const DocumentClient = jest.fn(() => ({
+        put: mockPut,
+    }));
 
-const mockPut = jest.fn();
-AWS.DynamoDB.DocumentClient = jest.fn(() => ({
-  put: mockPut,
+    return { DynamoDB: { DocumentClient } };
+});
+
+jest.mock("uuid", () => ({
+    v4: jest.fn(() => "mocked-uuid"),
 }));
 
-describe("Lambda Function - Create Order", () => {
-  const ORDERS_TABLE = "OrdersTable";
-  const callback = jest.fn();
+describe("createOrder.handler", () => {
+    const mockPut = AWS.DynamoDB.DocumentClient.prototype.put;
 
-  process.env.ORDERS_TABLE = ORDERS_TABLE;
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  test("should return 400 for invalid request body", async () => {
-    const event = { body: JSON.stringify({}) }; // Missing required fields
-    await handler(event, {}, callback);
-
-    expect(callback).toHaveBeenCalledWith(null, {
-      statusCode: 400,
-      headers: { "Access-Control-Allow-Origin": "*" },
-      body: JSON.stringify({
-        message: "Pedido inválido. Nome do cliente e itens são obrigatórios.",
-      }),
-    });
-  });
-
-  test("should return 201 for a valid request", async () => {
-    const mockOrderId = "123e4567-e89b-12d3-a456-426614174000";
-    jest.spyOn(AWS, "uuid").mockReturnValueOnce({
-      v4: () => mockOrderId,
+    beforeEach(() => {
+        jest.clearAllMocks();
     });
 
-    const requestBody = {
-      customerName: "Jane Doe",
-      items: ["item1", "item2"],
-      description: "Test order description",
-    };
+    it("deve retornar 400 quando o body não for fornecido", async () => {
+        const event = { body: null };
 
-    const event = { body: JSON.stringify(requestBody) };
+        const result = await handler(event);
 
-    mockPut.mockReturnValueOnce({
-      promise: jest.fn().mockResolvedValueOnce({}),
+        expect(result.statusCode).toBe(400);
+        expect(JSON.parse(result.body).message).toBe(
+            "Pedido inválido. Nome do cliente e itens são obrigatórios."
+        );
     });
 
-    await handler(event, {}, callback);
+    it("deve criar um pedido com sucesso", async () => {
+        const customerName = faker.name.fullName();
+        const items = Array.from({ length: 3 }, () => faker.commerce.productName());
 
-    expect(mockPut).toHaveBeenCalledWith({
-      TableName: ORDERS_TABLE,
-      Item: {
-        orderId: mockOrderId,
-        details: {
-          description: requestBody.description,
-          customerName: requestBody.customerName,
-        },
-      },
+        const event = {
+            body: JSON.stringify({
+                details: { customerName, items },
+            }),
+        };
+
+        mockPut.mockImplementation(() => ({
+            promise: jest.fn().mockResolvedValueOnce({}),
+        }));
+
+        const result = await handler(event);
+
+        expect(result.statusCode).toBe(201);
+        const responseBody = JSON.parse(result.body);
+        expect(responseBody.message).toBe("Order Created!");
+        expect(responseBody.orderId).toBe("mocked-uuid");
+
+        expect(mockPut).toHaveBeenCalledWith({
+            TableName: process.env.ORDERS_TABLE || "OrdersTable",
+            Item: {
+                orderId: "mocked-uuid",
+                details: { customerName, items },
+            },
+        });
     });
 
-    expect(callback).toHaveBeenCalledWith(null, {
-      statusCode: 201,
-      headers: { "Access-Control-Allow-Origin": "*" },
-      body: JSON.stringify({
-        message: "Order Created!",
-        orderId: mockOrderId,
-      }),
+    it("deve retornar 500 quando ocorrer um erro na inserção", async () => {
+        const customerName = faker.name.fullName();
+        const items = Array.from({ length: 3 }, () => faker.commerce.productName());
+
+        const event = {
+            body: JSON.stringify({
+                details: { customerName, items },
+            }),
+        };
+
+        mockPut.mockImplementation(() => ({
+            promise: jest.fn().mockRejectedValueOnce(new Error("DynamoDB error")),
+        }));
+
+        const result = await handler(event);
+
+        expect(result.statusCode).toBe(500);
+        const responseBody = JSON.parse(result.body);
+        expect(responseBody.message).toBe("Error on create order.");
+        expect(responseBody.error).toBe("DynamoDB error");
+
+        expect(mockPut).toHaveBeenCalledWith({
+            TableName: process.env.ORDERS_TABLE || "OrdersTable",
+            Item: {
+                orderId: "mocked-uuid",
+                details: { customerName, items },
+            },
+        });
     });
-  });
-
-  test("should return 500 on DynamoDB error", async () => {
-
-    const requestBody = {
-      customerName: "Jane Doe",
-      items: ["item1", "item2"],
-      description: "Test order description",
-    };
-
-    const event = { body: JSON.stringify(requestBody) };
-
-    mockPut.mockReturnValueOnce({
-      promise: jest.fn().mockRejectedValueOnce(new Error("DynamoDB Error")),
-    });
-
-    await handler(event, {}, callback);
-
-    expect(callback).toHaveBeenCalledWith(null, {
-      statusCode: 500,
-      headers: { "Access-Control-Allow-Origin": "*" },
-      body: JSON.stringify({
-        message: "Error on create order.",
-        error: "DynamoDB Error",
-      }),
-    });
-  });
 });
