@@ -1,14 +1,1 @@
-  Resources:
-    ordersTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: OrdersTable
-        AttributeDefinitions:
-          - AttributeName: orderId
-            AttributeType: S
-        KeySchema:
-          - AttributeName: orderId
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
+  Resources: ${file(./configurations/dynamodb.yml)}

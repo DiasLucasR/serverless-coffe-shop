@@ -1,25 +1,21 @@
-const AWS = require("aws-sdk");
-const { ORDERS_TABLE } = require("../../constants");
-
+import AWS from "aws-sdk";
+import { ORDERS_TABLE } from "../../constants.js";
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
-module.exports.handler = async (event, context, callback) => {
+export const handler = async (event) => {
+
     const tableName = ORDERS_TABLE;
     const { id } = event.pathParameters;
     const requestBody = JSON.parse(event.body);
-
+    const orderId = id;
 
     if (!id || !requestBody || Object.keys(requestBody).length === 0) {
-        callback(null, {
+        return {
             statusCode: 400,
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-            },
             body: JSON.stringify({
                 message: "Order ID and update data are required.",
             }),
-        });
-        return;
+        };
     }
 
     const updateExpression = [];
@@ -45,28 +41,20 @@ module.exports.handler = async (event, context, callback) => {
 
     try {
         const result = await dynamoDb.update(params).promise();
-
-        callback(null, {
+        return {
             statusCode: 200,
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-            },
             body: JSON.stringify({
                 message: `Order with ID '${orderId}' was updated successfully.`,
                 updatedAttributes: result.Attributes,
             }),
-        });
+        };
     } catch (error) {
-
-        callback(null, {
+        return {
             statusCode: 500,
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-            },
             body: JSON.stringify({
                 message: "Error updating order.",
                 error: error.message,
             }),
-        });
+        };
     }
 };

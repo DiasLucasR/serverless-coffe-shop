@@ -1,60 +1,47 @@
-const AWS = require("aws-sdk");
 
-const { ORDERS_TABLE } = require("../../constants");
-
+import AWS from "aws-sdk";
+import { ORDERS_TABLE } from "../../constants.js";
+import { v4 as uuid } from "uuid";
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
-module.exports.handler = async (event, context, callback) => {
+
+export const handler = async (event) => {
     const tableName = ORDERS_TABLE;
     const requestBody = JSON.parse(event.body);
 
-    if (!requestBody || !requestBody.customerName || !requestBody.items) {
-        callback(null, {
+    if (!requestBody) {
+        return {
             statusCode: 400,
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-            },
             body: JSON.stringify({
                 message: "Pedido inválido. Nome do cliente e itens são obrigatórios.",
-            }),
-        });
-        return;
+            })
+        };
     }
 
     const params = {
         TableName: tableName,
         Item: {
-            orderId: AWS.uuid.v4(),
-            details: {
-                description: requestBody.description,
-                customerName: requestBody.customerName,
-            },
+            orderId: uuid(),
+            details: requestBody.details,
         },
     };
-
     try {
         await dynamoDb.put(params).promise();
-
-        callback(null, {
+        return {
             statusCode: 201,
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-            },
             body: JSON.stringify({
                 message: "Order Created!",
                 orderId: params.Item.orderId,
-            }),
-        });
+            })
+        };
+
     } catch (error) {
-        callback(null, {
+        return {
             statusCode: 500,
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-            },
             body: JSON.stringify({
                 message: "Error on create order.",
                 error: error.message,
-            }),
-        });
+            })
+        };
     }
 };

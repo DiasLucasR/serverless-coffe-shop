@@ -1,7 +1,19 @@
 name: aws
 runtime: nodejs20.x
 httpApi:
-  cors: true
+  cors:
+    allowedOrigins:
+      - '*'
+    allowedHeaders:
+      - Content-Type
+      - Authorization
+    allowedMethods:
+      - OPTIONS
+      - GET
+      - POST
+      - PUT
+      - DELETE
+
 iam:
   role:
     statements:
@@ -16,4 +28,4 @@ iam:
         Resource:
           - Fn::GetAtt: [ OrdersTable, Arn ]
 environment:
-  ORDER_TABLE: ${self:custom.tableName}
+  ORDERS_TABLE: ${self:custom.tableName}

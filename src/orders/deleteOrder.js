@@ -1,54 +1,45 @@
-const AWS = require("aws-sdk");
-const { ORDERS_TABLE } = require("../../constants");
 
+import AWS from "aws-sdk";
+import { ORDERS_TABLE } from "../../constants.js";
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
-module.exports.handler = async (event, context, callback) => {
+
+export const handler = async (event) => {
     const tableName = ORDERS_TABLE;
     const { id } = event.pathParameters;
+    const orderId = id;
 
     if (!id) {
-        callback(null, {
+        return {
             statusCode: 400,
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-            },
             body: JSON.stringify({
                 message: "The Order Id is required.",
-            }),
-        });
-        return;
+            })
+        };
     }
 
     const params = {
         TableName: tableName,
         Key: {
-            orderId: id,
+            orderId: orderId,
         },
     };
 
     try {
         await dynamoDb.delete(params).promise();
-
-        callback(null, {
+        return {
             statusCode: 200,
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-            },
             body: JSON.stringify({
                 message: `Order with ID '${orderId}' was removed.`,
-            }),
-        });
+            })
+        };
     } catch (error) {
-        callback(null, {
+        return {
             statusCode: 500,
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-            },
             body: JSON.stringify({
                 message: "Error on remove the order.",
                 error: error.message,
-            }),
-        });
+            })
+        };
     }
 };

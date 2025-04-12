@@ -1,8 +1,9 @@
-const AWS = require("aws-sdk");
-const { ORDERS_TABLE } = require("../../constants");
+
+import AWS from "aws-sdk";
+import { ORDERS_TABLE } from "../../constants.js";
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
-module.exports.handle = async (event, context, callback) => {
+export const handler = async (event) => {
     const tableName = ORDERS_TABLE;
     const { id } = event.pathParameters;
 
@@ -17,36 +18,25 @@ module.exports.handle = async (event, context, callback) => {
         const result = await dynamoDb.get(params).promise();
 
         if (!result.Item) {
-            callback(null, {
+            return {
                 statusCode: 404,
-                headers: {
-                    "Access-Control-Allow-Origin": "*",
-                },
                 body: JSON.stringify({
                     message: "Order not found",
-                }),
-            });
-            return;
+                })
+            };
         }
 
-        callback(null, {
+        return {
             statusCode: 200,
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-            },
             body: JSON.stringify(result.Item),
-        });
+        };
     } catch (error) {
-
-        callback(null, {
+        return {
             statusCode: 500,
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-            },
             body: JSON.stringify({
                 message: "Error fetching order",
                 error: error.message,
             }),
-        });
+        };
     }
 };
