@@ -1,6 +1,8 @@
 import AWS from "aws-sdk";
 import { ORDERS_TABLE } from "../../constants.js";
-const dynamoDb = new AWS.DynamoDB.DocumentClient();
+const dynamoDb = new AWS.DynamoDB.DocumentClient({
+    endpoint: process.env.DYNAMODB_ENDPOINT || undefined, 
+});
 
 export const handler = async (event) => {
 

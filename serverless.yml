@@ -7,16 +7,8 @@ plugins:
   - serverless-dynamodb
   - serverless-offline
 
-custom:
-  stage: ${opt:stage, 'dev'}
-  tableName: OrdersTable
-  serverless-offline:
-    useChildProcesses: true 
-  serverless-dynamodb:
-    start:
-      port: 8000
-      docker: false
-    
+custom: ${file(./configurations/custom.yml)}
+
 provider: ${file(./configurations/provider.yml)}
 
 functions: ${file(./configurations/functions.yml)}

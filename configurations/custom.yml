@@ -1,5 +1,17 @@
-stage: ${opt:stage, 'dev'}
+dynamodbEndpoint:
+    dev: http://localhost:8000
+    prod: null
+stages:
+  - dev
+  - prod
 tableName: OrdersTable
+dynamodb:
+  start:
+    port: 8000
+    inMemory: true
+    migrate: true
+  stages:
+    - dev
 serverless-offline:
   useChildProcesses: true 
 serverless-dynamodb:

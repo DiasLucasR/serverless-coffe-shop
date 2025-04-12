@@ -29,3 +29,5 @@ iam:
           - Fn::GetAtt: [ OrdersTable, Arn ]
 environment:
   ORDERS_TABLE: ${self:custom.tableName}
+  NODE_ENV: ${opt:stage, 'dev'}
+  DYNAMODB_ENDPOINT: ${self:custom.dynamodbEndpoint.${opt:stage, 'dev'}}

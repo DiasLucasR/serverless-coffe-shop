@@ -1,7 +1,10 @@
 import AWS from "aws-sdk";
 import { ORDERS_TABLE } from "../../constants.js";
-
-const dynamoDb = new AWS.DynamoDB.DocumentClient();
+import dotenv from "dotenv";
+const dynamoDb = new AWS.DynamoDB.DocumentClient({
+    endpoint: process.env.DYNAMODB_ENDPOINT || undefined, 
+});
+dotenv.config();
 
 export const handler = async (event) => {
   const tableName = ORDERS_TABLE;

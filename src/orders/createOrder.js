@@ -2,8 +2,9 @@
 import AWS from "aws-sdk";
 import { ORDERS_TABLE } from "../../constants.js";
 import { v4 as uuid } from "uuid";
-const dynamoDb = new AWS.DynamoDB.DocumentClient();
-
+const dynamoDb = new AWS.DynamoDB.DocumentClient({
+    endpoint: process.env.DYNAMODB_ENDPOINT || undefined, 
+  });
 
 export const handler = async (event) => {
     const tableName = ORDERS_TABLE;
