@@ -12,11 +12,11 @@ export const handler = async (event) => {
     const tableName = ORDERS_TABLE;
     const requestBody = JSON.parse(event.body);
 
-    if (!requestBody) {
+    if (!requestBody.details) {
         return {
             statusCode: 400,
             body: JSON.stringify({
-                message: "Pedido inválido. Nome do cliente e itens são obrigatórios.",
+                message: "Invalid request. Order details are required.",
             })
         };
     }
