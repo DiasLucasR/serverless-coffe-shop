@@ -2,19 +2,21 @@
 import AWS from "aws-sdk";
 import { ORDERS_TABLE } from "../../constants.js";
 import { v4 as uuid } from "uuid";
+import dotenv from "dotenv";
+dotenv.config();
 const dynamoDb = new AWS.DynamoDB.DocumentClient({
-    endpoint: process.env.DYNAMODB_ENDPOINT || undefined, 
-  });
+    endpoint: process.env.DYNAMODB_ENDPOINT || undefined,
+});
 
 export const handler = async (event) => {
     const tableName = ORDERS_TABLE;
     const requestBody = JSON.parse(event.body);
 
-    if (!requestBody) {
+    if (!requestBody.details) {
         return {
             statusCode: 400,
             body: JSON.stringify({
-                message: "Pedido inválido. Nome do cliente e itens são obrigatórios.",
+                message: "Invalid request. Order details are required.",
             })
         };
     }

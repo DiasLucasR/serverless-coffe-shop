@@ -1,6 +1,8 @@
 
 import AWS from "aws-sdk";
 import { ORDERS_TABLE } from "../../constants.js";
+import dotenv from "dotenv";
+dotenv.config();
 const dynamoDb = new AWS.DynamoDB.DocumentClient({
     endpoint: process.env.DYNAMODB_ENDPOINT || undefined, 
 });
@@ -22,7 +24,7 @@ export const handler = async (event) => {
             return {
                 statusCode: 404,
                 body: JSON.stringify({
-                    message: "Order not found",
+                    message: "Order not found.",
                 })
             };
         }
@@ -35,7 +37,7 @@ export const handler = async (event) => {
         return {
             statusCode: 500,
             body: JSON.stringify({
-                message: "Error fetching order",
+                message: "Error fetching order.",
                 error: error.message,
             }),
         };
