@@ -20,7 +20,7 @@ jobs:
             cache: 'yarn'
 
         - name: Install dependencies
-          run: yarn ci
+          run: yarn install
 
         - name: Run tests
           run: yarn test
@@ -41,7 +41,7 @@ jobs:
               cache: 'yarn'
 
           - name: Install dependencies
-            run: yarn
+            run: yarn install
 
           - name: Install Serverless Framework
             run: yarn global add serverless
