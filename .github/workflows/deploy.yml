@@ -1,0 +1,53 @@
+name: Serverless Coffee-Shop CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+    test:
+      name: tests
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v3
+
+        - name: Setup Node.js
+          uses: actions/setup-node@v3
+          with:
+            node-version: '20'
+            cache: 'yarn'
+
+        - name: Install dependencies
+          run: yarn ci
+
+        - name: Run tests
+          run: yarn test
+          
+    deploy-prod:
+        name: Deploy to Production
+        needs: test
+        runs-on: ubuntu-latest
+
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v3
+
+          - name: Setup Node.js
+            uses: actions/setup-node@v3
+            with:
+              node-version: '20'
+              cache: 'yarn'
+
+          - name: Install dependencies
+            run: yarn
+
+          - name: Install Serverless Framework
+            run: yarn global add serverless
+
+          - name: Deploy to production
+            run: serverless deploy --stage prod
+            env:
+              AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+              AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
