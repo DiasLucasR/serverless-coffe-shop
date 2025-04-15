@@ -3,7 +3,7 @@ name: Serverless Coffee-Shop CI/CD
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
     test:
@@ -24,7 +24,7 @@ jobs:
 
         - name: Run tests
           run: yarn test
-          
+
     deploy-prod:
         name: Deploy to Production
         needs: test
