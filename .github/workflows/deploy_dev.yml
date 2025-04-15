@@ -1,4 +1,4 @@
-name: Serveles
+name: Serverless Coffee-Shop CI/CD - DEV
 
 on:
     pull_request:
