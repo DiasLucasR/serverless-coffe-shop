@@ -3,7 +3,7 @@ import { ORDERS_TABLE } from "../../constants.js";
 import dotenv from "dotenv";
 dotenv.config();
 const dynamoDb = new AWS.DynamoDB.DocumentClient({
-    endpoint: process.env.DYNAMODB_ENDPOINT || undefined, 
+  endpoint: process.env.DYNAMODB_ENDPOINT || undefined,
 });
 
 export const handler = async (event) => {

@@ -60,7 +60,7 @@ describe('GET /orders', () => {
 
     const result = await handler(event);
     expect(result.statusCode).toBe(200);
-    expect(JSON.parse(result.body)).toEqual( mockOrders.Items);
+    expect(JSON.parse(result.body)).toEqual(mockOrders.Items);
 
   })
 
@@ -68,15 +68,15 @@ describe('GET /orders', () => {
 
     const dbError = new Error('Internal Error DynamoDB');
     dynamoDBMock.promise.mockRejectedValueOnce(dbError);
-    
+
     const event = {
       httpMethod: 'GET',
       pathParameters: null,
       queryStringParameters: null
     };
-    
+
     const result = await handler(event);
-    
+
     expect(result.statusCode).toBe(500);
     expect(JSON.parse(result.body)).toEqual({
       message: 'Error fetching orders',

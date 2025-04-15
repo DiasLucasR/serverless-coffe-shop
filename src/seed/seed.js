@@ -6,12 +6,12 @@ dotenv.config();
 
 const dynamoDb = new AWS.DynamoDB({
   endpoint: "http://localhost:8000",
-  region:  "us-east-1",
+  region: "us-east-1",
 });
 
 const documentClient = new AWS.DynamoDB.DocumentClient({
-  endpoint:  "http://localhost:8000",
-  region:  "us-east-1",
+  endpoint: "http://localhost:8000",
+  region: "us-east-1",
 });
 
 const tableName = process.env.ORDERS_TABLE || "OrdersTable";
@@ -23,7 +23,7 @@ const createTable = async () => {
       { AttributeName: "orderId", KeyType: "HASH" },
     ],
     AttributeDefinitions: [
-      { AttributeName: "orderId", AttributeType: "S" }, 
+      { AttributeName: "orderId", AttributeType: "S" },
     ],
     ProvisionedThroughput: {
       ReadCapacityUnits: 5,
@@ -33,10 +33,8 @@ const createTable = async () => {
 
   try {
     await dynamoDb.createTable(params).promise();
-    console.log(`Table "${tableName}" created successfully.`);
   } catch (error) {
     if (error.code === "ResourceInUseException") {
-      console.log(`Table "${tableName}" already exists.`);
     } else {
       console.error("Error creating table:", error.message);
     }
@@ -60,7 +58,6 @@ const seedData = async () => {
 
     try {
       const data = await documentClient.put(params).promise();
-      console.log(`Inserted item with orderId: ${item.orderId}`, data);
     } catch (error) {
       console.error(`Error inserting item with orderId: ${item.orderId}`, error.message);
     }
