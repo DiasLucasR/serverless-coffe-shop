@@ -1,4 +1,4 @@
-ordersTable:
+OrdersTable:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: OrdersTable

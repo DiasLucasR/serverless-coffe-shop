@@ -1,5 +1,7 @@
 name: aws
 runtime: nodejs20.x
+region: us-east-1
+
 httpApi:
   cors:
     allowedOrigins:
@@ -25,6 +27,20 @@ iam:
           - dynamodb:PutItem
           - dynamodb:UpdateItem
           - dynamodb:DeleteItem
+          - s3:CreateBucket"
+          - s3:PutObject"
+          - s3:GetObject
+          - s3:ListBucket
+          - s3:DeleteObject
+          - ssm:PutParameter"
+          - ssm:GetParameter"
+          - ssm:DeleteParameter"
+          - ssm:DescribeParameters"
+          - apigateway:GET"
+          - apigateway:POST"
+          - apigateway:PUT"
+          - apigateway:DELETE"
+          - apigateway:PATCH"
         Resource:
           - Fn::GetAtt: [ OrdersTable, Arn ]
 environment:

@@ -2,8 +2,8 @@ dynamodbEndpoint:
     dev: http://localhost:8000
     prod: null
 stages:
-  - dev
   - prod
+  - dev
 tableName: OrdersTable
 dynamodb:
   start:
