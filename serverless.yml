@@ -3,6 +3,8 @@ app: coffee-shop
 service: coffee-shop-serverless
 
 plugins:
+  - serverless-webpack
+  - serverless-prune-plugin
   - serverless-dynamodb
   - serverless-offline
 
@@ -13,3 +15,4 @@ provider: ${file(./configurations/provider.yml)}
 functions: ${file(./configurations/functions.yml)}
 
 resources: ${file(./configurations/resources.yml)}
+

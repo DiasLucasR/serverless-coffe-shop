@@ -18,3 +18,8 @@ serverless-dynamodb:
   start:
     port: 8000
     docker: false
+prune:
+    automatic: true
+    number: 3
+webpack:
+  webpackConfig: webpack.config.cjs  
