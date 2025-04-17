@@ -34,7 +34,7 @@ describe("DELETE /orders", () => {
   });
 
   test('should return code 400 ', async () => {
-    const event = { pathParameters: {} }; 
+    const event = { pathParameters: {} };
     const result = await handler(event);
 
     expect(result.statusCode).toBe(400);
@@ -46,7 +46,7 @@ describe("DELETE /orders", () => {
   test("should return code 200", async () => {
     const mockOrder = generateMockOrder();
     const id = mockOrder.orderId;
-    
+
     dynamoDBMock.promise.mockResolvedValueOnce({
       Attributes: mockOrder
     });

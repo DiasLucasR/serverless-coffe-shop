@@ -27,7 +27,7 @@ const generateMockOrder = () => {
 
 describe("PUT /orders", () => {
   let dynamoDBMock;
-  
+
   beforeEach(() => {
     jest.clearAllMocks();
     dynamoDBMock = new AWS.DynamoDB.DocumentClient();
@@ -36,14 +36,14 @@ describe("PUT /orders", () => {
   test('should return code 400', async () => {
     const mockOrder = generateMockOrder();
     const id = mockOrder.orderId;
-    
-    const event = { 
+
+    const event = {
       pathParameters: { id },
       body: null
     };
-    
+
     const result = await handler(event);
-    
+
     expect(result.statusCode).toBe(400);
     expect(JSON.parse(result.body)).toEqual({
       message: 'Order ID and update data are required.'
@@ -53,39 +53,38 @@ describe("PUT /orders", () => {
   test("should return code 200", async () => {
     const mockOrder = generateMockOrder();
     const id = mockOrder.orderId;
-    
+
     const updatedDetails = {
       clientName: faker.person.fullName(),
-      items: [ faker.commerce.productName(), faker.commerce.productName()],
+      items: [faker.commerce.productName(), faker.commerce.productName()],
       description: faker.lorem.lines()
     };
-    
+
     dynamoDBMock.promise.mockResolvedValueOnce(mockOrder);
 
-    const event = { 
+    const event = {
       pathParameters: { id },
       body: JSON.stringify({
         details: updatedDetails
       })
     };
-    
+
     const result = await handler(event);
-    console.log(result.body)
     expect(result.statusCode).toBe(200);
     expect(JSON.parse(result.body)).toEqual({
       message: `Order with ID '${id}' was updated successfully.`,
     });
 
   });
-  
+
   test('should return code 500', async () => {
     const mockOrder = generateMockOrder();
     const id = mockOrder.orderId;
-    
+
     const dbError = new Error('Internal Error DynamoDB');
     dynamoDBMock.promise.mockRejectedValueOnce(dbError);
-    
-    const event = { 
+
+    const event = {
       pathParameters: { id },
       body: JSON.stringify({
         details: {
@@ -95,9 +94,9 @@ describe("PUT /orders", () => {
         }
       })
     };
-    
+
     const result = await handler(event);
-    
+
     expect(result.statusCode).toBe(500);
     expect(JSON.parse(result.body)).toEqual({
       message: 'Error updating order.',
