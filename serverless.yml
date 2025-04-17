@@ -2,7 +2,6 @@ org: diaslucas
 app: coffee-shop
 service: coffee-shop-serverless
 
-
 plugins:
   - serverless-dynamodb
   - serverless-offline
