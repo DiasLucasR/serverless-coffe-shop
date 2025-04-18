@@ -1,6 +1,6 @@
-const { faker } = require("@faker-js/faker");
-const { handler } = require("../orders/getOrderById");
-const AWS = require("aws-sdk");
+import AWS from 'aws-sdk';
+import { faker } from '@faker-js/faker';
+import  { handler } from '../orders/getOrderById';
 
 jest.mock("aws-sdk", () => {
   const mockDocumentClient = {

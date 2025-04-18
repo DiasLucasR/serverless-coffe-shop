@@ -1,6 +1,6 @@
-const AWS = require('aws-sdk');
-const { faker } = require('@faker-js/faker');
-const { handler } = require('../orders/createOrder');
+import AWS from 'aws-sdk';
+import { faker } from '@faker-js/faker';
+import  { handler } from '../orders/createOrder';
 
 // Mock do módulo AWS SDK
 jest.mock('aws-sdk', () => {

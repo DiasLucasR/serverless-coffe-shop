@@ -1,6 +1,6 @@
 dynamodbEndpoint:
     dev: http://localhost:8000
-    prod: null
+    prod: ''
 stages:
   - prod
   - dev
@@ -22,4 +22,4 @@ prune:
     automatic: true
     number: 3
 webpack:
-  webpackConfig: webpack.config.cjs  
+  webpackConfig: webpack.config.cjs

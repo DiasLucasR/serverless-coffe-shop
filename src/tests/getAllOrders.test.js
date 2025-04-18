@@ -1,6 +1,6 @@
-const AWS = require('aws-sdk');
-const { handler } = require('../orders/getOrders');
-const { faker } = require('@faker-js/faker');
+import AWS from 'aws-sdk';
+import { faker } from '@faker-js/faker';
+import  { handler } from '../orders/getOrders';
 
 jest.mock('aws-sdk', () => {
   const mDynamoDB = {
