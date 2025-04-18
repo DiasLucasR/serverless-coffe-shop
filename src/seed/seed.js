@@ -43,7 +43,7 @@ const createTable = async () => {
 
 const seedData = async () => {
   const items = [
-    { orderId: uuid(), details: { customerName: "John Doe", description: "Text for description" } },
+    { orderId: uuid(), details: { customerName: "John Doe", description: "Text for description" } }, 
     { orderId: uuid(), details: { customerName: "Jane Doe", description: "Text for description" } },
     { orderId: uuid(), details: { customerName: "Alice Smith", description: "Text for description" } },
     { orderId: uuid(), details: { customerName: "Bob Johnson", description: "Text for description" } },

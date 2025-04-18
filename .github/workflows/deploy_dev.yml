@@ -45,7 +45,7 @@ jobs:
           run: yarn install
   
         - name: Install Serverless Framework
-          run: yarn global add serverless
+          run: yarn global add serverless@3.38.0
   
         - name: Deploy to dev
           run: serverless deploy --stage dev
