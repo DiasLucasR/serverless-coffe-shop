@@ -46,9 +46,7 @@ Deploying "coffee-shop-api" to stage "dev" (us-east-1)
 ✔ Service deployed to stack coffee-shop-api-dev (91s)
 
 endpoint: GET - https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/
-functions:
-  hello: coffee-shop-api-dev-hello (1.6 kB)
-```
+
 
 _Note_: By default, the API is public and accessible to anyone. For production, consider adding an authorizer. Refer to the [HTTP API (API Gateway V2) event docs](https://www.serverless.com/framework/docs/providers/aws/events/http-api) for more details.
 
